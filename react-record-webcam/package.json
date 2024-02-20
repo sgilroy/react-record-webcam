@@ -1,5 +1,5 @@
 {
-  "name": "react-record-webcam",
+  "name": "@scottjgilroy/react-record-webcam",
   "description": "Webcam recording tool for React",
   "version": "1.0.2",
   "main": "dist/index.js",
