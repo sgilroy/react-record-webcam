@@ -90,7 +90,8 @@ export function useRecordWebcam(args?: Partial<UseRecordWebcam>) {
       const stream = await startStream(
         recording.videoId,
         recording.audioId,
-        constraints
+        constraints,
+        recording.isMuted
       );
 
       if (recording.webcamRef.current) {
