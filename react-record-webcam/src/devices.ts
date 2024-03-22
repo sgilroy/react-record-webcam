@@ -51,10 +51,12 @@ async function byType(devices: MediaDeviceInfo[]): Promise<ByType> {
   );
 }
 
-async function getUserPermission(): Promise<MediaDeviceInfo[]> {
+async function getUserPermission(
+  initializeAudio: boolean
+): Promise<MediaDeviceInfo[]> {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
+      audio: initializeAudio,
       video: true,
     });
     const mediaDevices = await navigator.mediaDevices.enumerateDevices();
@@ -77,7 +79,7 @@ type InitialDevices = {
   audio: InitialDevice | null;
 };
 
-export function useDeviceInitialization(): {
+export function useDeviceInitialization(initializeAudio: boolean): {
   devicesByType: ByType;
   devicesById: ById;
   initialDevices: InitialDevices;
@@ -96,7 +98,7 @@ export function useDeviceInitialization(): {
   useEffect(() => {
     const initializeDevices = async () => {
       try {
-        const mediaDevices = await getUserPermission();
+        const mediaDevices = await getUserPermission(initializeAudio);
         const [allById, allByType] = await Promise.all([
           byId(mediaDevices),
           byType(mediaDevices),

@@ -17,3 +17,11 @@ export const DEFAULT_CONSTRAINTS: MediaTrackConstraints = {
   height: 720,
   width: 1280,
 } as const;
+
+export const DEFAULT_OPTIONS: {
+  recorderTimeSlice: number;
+  initializeAudio: boolean;
+} = {
+  recorderTimeSlice: 1000,
+  initializeAudio: true,
+};

@@ -4,6 +4,7 @@ import { useDeviceInitialization } from './devices';
 import { startStream } from './stream';
 import {
   DEFAULT_CONSTRAINTS,
+  DEFAULT_OPTIONS,
   DEFAULT_RECORDER_OPTIONS,
   ERROR_MESSAGES,
 } from './constants';
@@ -14,6 +15,7 @@ type Options = {
   fileType: string;
   mimeType: string;
   recorderTimeSlice: number;
+  initializeAudio: boolean;
 };
 
 type UseRecordWebcam = {
@@ -23,8 +25,16 @@ type UseRecordWebcam = {
 };
 
 export function useRecordWebcam(args?: Partial<UseRecordWebcam>) {
+  const options: Partial<Options> = useMemo(
+    () => ({
+      ...DEFAULT_OPTIONS,
+      ...args?.options,
+    }),
+    [args]
+  );
+
   const { devicesByType, devicesById, initialDevices } =
-    useDeviceInitialization();
+    useDeviceInitialization(options.initializeAudio || false);
   const {
     activeRecordings,
     clearAllRecordings,
@@ -146,7 +156,7 @@ export function useRecordWebcam(args?: Partial<UseRecordWebcam>) {
       recording.recorder.onstop = async () => {
         // Create a new blob from the array of blobs
         const blob = new Blob(recording.blobs, {
-          type: `video/${args?.options?.mimeType || recording.mimeType}`,
+          type: `video/${options.mimeType || recording.mimeType}`,
         });
         const url = URL.createObjectURL(blob);
         recording.objectURL = url;
@@ -163,7 +173,7 @@ export function useRecordWebcam(args?: Partial<UseRecordWebcam>) {
         handleError('startRecording', error, recordingId);
       };
 
-      recording.recorder.start(args?.options?.recorderTimeSlice || 1000);
+      recording.recorder.start(options.recorderTimeSlice);
       recording.status = STATUS.RECORDING;
       const updatedRecording = await updateRecording(recording.id, recording);
       return updatedRecording;
@@ -283,9 +293,9 @@ export function useRecordWebcam(args?: Partial<UseRecordWebcam>) {
         downloadElement.href = recording.objectURL;
       }
 
-      downloadElement.download = `${
-        args?.options?.fileName || recording.fileName
-      }.${args?.options?.fileType || recording.fileType}`;
+      downloadElement.download = `${options.fileName || recording.fileName}.${
+        options.fileType || recording.fileType
+      }`;
       downloadElement.click();
     } catch (error) {
       handleError('download', error, recordingId);
