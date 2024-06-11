@@ -10,6 +10,8 @@ import {
 } from './constants';
 import type { Recording } from './useRecording';
 
+export type { Recording } from './useRecording';
+
 type Options = {
   fileName: string;
   fileType: string;
