@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "alwaysStrict": true,
+    "allowJs": true,
     "declaration": true,
     "esModuleInterop": true,
     "jsx": "react",
     "module": "commonjs",
     "moduleResolution": "node",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
