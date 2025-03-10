@@ -105,36 +105,12 @@ export function useRecordWebcam({
 
   async function init() {
     try {
-      const devices = await getDevices();
+      const devices = await getDevices(options?.initializeAudio || false);
       setDevices(devices);
     } catch (error) {
-      handleError('createRecording', error, `${videoId}-${audioId}`);
+      handleError('createRecording', error);
     }
   }
-
-  const openCamera = async (recordingId: string): Promise<Recording | void> => {
-    try {
-      const recording = getRecording(recordingId);
-
-      const stream = await startStream(
-        recording.videoId,
-        recording.audioId,
-        constraints
-      );
-
-      if (recording.webcamRef.current) {
-        recording.webcamRef.current.srcObject = stream;
-        await recording.webcamRef.current.play();
-      }
-
-      recording.status = STATUS.OPEN;
-      const updatedRecording = await updateRecording(recording.id, recording);
-
-      return updatedRecording;
-    } catch (error) {
-      handleError('openCamera', error);
-    }
-  };
 
   useEffect(() => {
     init();
