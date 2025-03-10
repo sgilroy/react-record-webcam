@@ -6,6 +6,8 @@ import { useRecorder, type UseRecorder } from './useRecorder';
 import { useCamera, type UseCamera } from './useCamera';
 import { type Recording } from './useRecordingStore';
 
+export { type Recording } from './useRecordingStore';
+
 /**
  * Options for customizing the recording settings.
  */
