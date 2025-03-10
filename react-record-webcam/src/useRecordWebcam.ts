@@ -110,7 +110,7 @@ export function useRecordWebcam({
       const devices = await getDevices(options?.initializeAudio || false);
       setDevices(devices);
     } catch (error) {
-      handleError('createRecording', error);
+      handleError('init', error);
     }
   }
 
