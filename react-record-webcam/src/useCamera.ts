@@ -86,7 +86,8 @@ export function useCamera({
       const stream = await startStream(
         recording.videoId,
         recording.audioId,
-        constraints
+        constraints,
+        recording.isMuted
       );
       if (recording.webcamRef.current) {
         recording.webcamRef.current.srcObject = stream;
